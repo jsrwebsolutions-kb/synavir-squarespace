@@ -1,6 +1,7 @@
 jQuery(function(){
     var $body = jQuery('body');
-
+    console.log('check if working overall');
+    console.log($body.hasClass('sqs-edit-mode'));
     if( !$body.hasClass('sqs-edit-mode') ){
 
         initSlider(); // for home only
@@ -9,6 +10,7 @@ jQuery(function(){
 });
 
 function initSlider() {
+    console.log('check if working');
     var $body = jQuery('body');
     if( $body.hasClass( 'collection-5f9263d36b423f1cda0ee2c9' )){
 
