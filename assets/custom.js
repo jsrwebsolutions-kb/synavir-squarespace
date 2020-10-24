@@ -1,7 +1,6 @@
 jQuery(function(){
     var $body = jQuery('body');
-    console.log('check if working overall');
-    console.log($body.hasClass('sqs-edit-mode'));
+
     if( !$body.hasClass('sqs-edit-mode') ){
 
         initSlider(); // for home only
@@ -10,26 +9,35 @@ jQuery(function(){
 });
 
 function initSlider() {
-    console.log('check if working');
-    var $body = jQuery('body');
-    if( $body.hasClass( 'collection-5f9263d36b423f1cda0ee2c9' )){
 
-        var first_section = 1,
-            ends_section = 3;
+
+    //slider
+    var  $slider_content_top = 0,
+        $slick_dots_offset = '50px';
+
+    var $body = jQuery('body');
+
+    if ($body.hasClass('collection-5f9263d36b423f1cda0ee2c9')) {
+
+        var ends_section = 3;
 
         jQuery('main#page .sections').prepend('<div class="fullwidth-section-banner-slider"></div>');
 
-        jQuery('main#page .sections .page-section').each(function ( index ) {
-                console.log(index);
+        var $append_to = jQuery('.fullwidth-section-banner-slider');
+
+        jQuery('main#page .sections .page-section').each(function (index) {
+
+            var $this = jQuery(this);
+
+            if (index + 1 <= ends_section) {
+                $append_to.append($this);
+            }
         });
 
     }
 
-    //slider
-    var $slick = jQuery('.fullwidth-section-banner-slider');
-
     //pause slider on scrolldown on click
-    jQuery(document).on('click', '.fullwidth-section-banner-slider .scroll-down-container', function(e) {
+    jQuery(document).on('click', '.fullwidth-section-banner-slider .scroll-down-container', function (e) {
         e.preventDefault();
         $slick.slick('slickPause');
     });
@@ -41,8 +49,26 @@ function initSlider() {
         remove: false
     };
 
-
     //jQuery('.fullwidth-section-banner-slider .et_pb_fullwidth_header.fwh-banner .header-content').matchHeight( $options );
+
+    //slick
+    var $slick = jQuery('.fullwidth-section-banner-slider');
+
+    $slick.on('init afterChange', function () {
+
+        setTimeout(function () {
+            var $slider_item = jQuery(".fullwidth-section-banner-slider .slick-active .sqs-block-html");
+
+            if ($slick.length && $slider_item.length) {
+                $slider_content_top = $slider_item.position().top;
+                $slick_dots_offset = $slider_content_top;
+                jQuery('.fullwidth-section-banner-slider .slick-dots').css('top', $slick_dots_offset + "px");
+            }
+
+            console.log( $slider_content_top );
+        },300);
+
+    });
 
     $slick.slick({
         dots: true,
@@ -50,12 +76,12 @@ function initSlider() {
         infinite: true,
         slidesToShow: 1,
         autoplay: true,
-        autoplaySpeed: 10000,
-        //fade: true,
+        autoplaySpeed: 90000,
+        fade: true,
+        useCSS: true,
         slidesToScroll: 1,
-        cssEase: 'cubic-bezier(0.7, 0, 0.3, 1)',
         touchThreshold: 100,
-        customPaging : function(slider, i) {
+        customPaging: function (slider, i) {
             return '<svg class="progress"><circle r="7" cx="18" cy="18"/></svg><button type="button"></button>';
         },
     });
@@ -76,11 +102,6 @@ function initSlider() {
         tick = setInterval(interval, 10);
     }
 
-    if( $slick.length ){
-        $slider_content_top = jQuery(".fullwidth-section-banner-slider .et_pb_fullwidth_header.fwh-banner .fwh-banner-content-wrapper").position().top;
-        $slick_dots_offset = $slider_content_top - 50;
-        jQuery('.fullwidth-section-banner-slider .slick-dots').css('top',$slick_dots_offset+"px");
-    }
 
     var $rbar = jQuery('.fullwidth-section-banner-slider .slick-dots .progress circle');
     var rlen = 2 * Math.PI * $rbar.attr('r');
@@ -105,19 +126,19 @@ function initSlider() {
 
     function resetProgressbar() {
         $bar.css({
-            width: 0+'%'
+            width: 0 + '%'
         });
         clearTimeout(tick);
     }
 
     startProgressbar();
 
-    $slick.on('swipe', function(event, slick, direction) {
+    $slick.on('swipe', function (event, slick, direction) {
         $slick.slick('slickPause');
         $slick.slick('slickNext').stop();
     });
 
-    jQuery(document).on('click', '.fullwidth-section-banner-slider .slick-dots li button', function(e) {
+    jQuery(document).on('click', '.fullwidth-section-banner-slider .slick-dots li button', function (e) {
         e.preventDefault();
         $slick.slick('slickPause');
         $slick.slick('slickNext').stop();
