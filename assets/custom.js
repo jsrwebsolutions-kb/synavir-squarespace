@@ -1,13 +1,12 @@
 jQuery(function(){
     var $body = jQuery('body');
 
-    if( !$body.hasClass('sqs-edit-mode-active') ){
+    if( !$body.hasClass('sqs-edit-mode') ){
 
         initSlider(); // for home only
 
     }
 });
-
 
 function initSlider() {
     var $body = jQuery('body');
